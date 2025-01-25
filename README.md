@@ -25,7 +25,7 @@ Make sure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/react-vite-starter-template.git
+   git clone https://github.com/MouradTd/react-microservice-front.git
    cd react-vite-starter-template
    ```
 
