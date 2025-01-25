@@ -11,10 +11,12 @@ export interface Patient {
 
 interface PatientState {
     patients: Patient[];
+    selectedItem: Patient | null;
 }
 
 const initialState: PatientState = {
     patients: [],
+    selectedItem: null,
 };
 
 const patientSlice = createSlice({
@@ -30,8 +32,20 @@ const patientSlice = createSlice({
         removePatient(state, action: PayloadAction<number>) {
             state.patients = state.patients.filter(patient => patient.id !== action.payload);
         },
+        selectPatient(state, action: PayloadAction<Patient>) {
+            state.selectedItem = action.payload;
+        },
+        clearSelectedPatient(state) {
+            state.selectedItem = null;
+        },
+        editPatient(state, action: PayloadAction<Patient>) {
+            const index = state.patients.findIndex(patient => patient.id === action.payload.id);
+            if (index !== -1) {
+                state.patients[index] = action.payload;
+            }
+        },
     },
 });
 
-export const { setPatients, addPatient, removePatient } = patientSlice.actions;
+export const { setPatients, addPatient, removePatient,selectPatient,clearSelectedPatient,editPatient } = patientSlice.actions;
 export const patientReducer = patientSlice.reducer;

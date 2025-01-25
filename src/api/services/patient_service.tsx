@@ -19,6 +19,22 @@ class PatientService {
             console.log(e);
         }
     }
+    async EditPatient(id:any,data:any) {
+        try {
+            const res = await client.put(this.URI+id,data);
+            return res;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    async deletePatient(id:any) {
+        try {
+            const res = await client.delete(this.URI+id);
+            return res;
+        } catch (e) {
+            console.log(e);
+        }
+    }
 }
 export const patientService = new PatientService();
 
