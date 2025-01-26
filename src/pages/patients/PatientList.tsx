@@ -51,43 +51,45 @@ export const PatientList: React.FC = () => {
             >
                 Ajouter un Patient
             </button>
-            <table className="min-w-full bg-white border border-gray-300">
-                <thead>
-                    <tr>
-                        <th className="border px-4 py-2">Nom Complet</th>
-                        <th className="border px-4 py-2">Age</th>
-                        <th className="border px-4 py-2">Email</th>
-                        <th className="border px-4 py-2">Sexe</th>
-                        <th className="border px-4 py-2">Date de Naissance</th>
-                        <th className="border px-4 py-2"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {patients.map(patient => (
-                        <tr key={patient.id}>
-                            <td className="border px-4 py-2">{patient.name}</td>
-                            <td className="border px-4 py-2">{patient.age}</td>
-                            <td className="border px-4 py-2">{patient.email}</td>
-                            <td className="border px-4 py-2">{patient.gender === 'MALE' ? 'Homme' : 'Femme'}</td>
-                            <td className="border px-4 py-2">{patient.dateOfBirth}</td>
-                            <td className='d-flex flex-row gap-2 p-2'>
-                                <button className='btn btn-primary btn-sm'
-                                 data-bs-toggle="modal" data-bs-target="#detailPatient">
-                                    <i className='ti ti-eye'></i>
-                                </button>
-                                <button className='btn btn-warning btn-sm' onClick={() => handleEditClick(patient)}
-                                    data-bs-toggle="modal" data-bs-target="#editPatient">
-                                    <i className='ti ti-pencil'></i>
-                                </button>
-                                <button className='btn btn-danger btn-sm' onClick={() => handleEditClick(patient)}
-                                    data-bs-toggle="modal" data-bs-target="#delete-patient">
-                                    <i className='ti ti-trash'></i>
-                                </button>
-                            </td>
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th className="border px-4 py-2">Nom Complet</th>
+                            <th className="border px-4 py-2">Age</th>
+                            <th className="border px-4 py-2">Email</th>
+                            <th className="border px-4 py-2">Sexe</th>
+                            <th className="border px-4 py-2">Date de Naissance</th>
+                            <th className="border px-4 py-2"></th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {patients.map(patient => (
+                            <tr key={patient.id}>
+                                <td className="border px-4 py-2 text-sm md:text-base">{patient.name}</td>
+                                <td className="border px-4 py-2 text-sm md:text-base">{patient.age}</td>
+                                <td className="border px-4 py-2 text-sm md:text-base">{patient.email}</td>
+                                <td className="border px-4 py-2 text-sm md:text-base">{patient.gender === 'MALE' ? 'Homme' : 'Femme'}</td>
+                                <td className="border px-4 py-2 text-sm md:text-base">{patient.dateOfBirth}</td>
+                                <td className='d-flex flex-row gap-2 p-2'>
+                                    <button className='btn btn-primary btn-sm'
+                                     data-bs-toggle="modal" data-bs-target="#detailPatient">
+                                        <i className='ti ti-eye'></i>
+                                    </button>
+                                    <button className='btn btn-warning btn-sm' onClick={() => handleEditClick(patient)}
+                                        data-bs-toggle="modal" data-bs-target="#editPatient">
+                                        <i className='ti ti-pencil'></i>
+                                    </button>
+                                    <button className='btn btn-danger btn-sm' onClick={() => handleEditClick(patient)}
+                                        data-bs-toggle="modal" data-bs-target="#delete-patient">
+                                        <i className='ti ti-trash'></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             <AddPatientModal />
             <EditPatientModal patient={selectedPatient} />
@@ -101,7 +103,6 @@ export const PatientList: React.FC = () => {
                 message="Êtest-vous sûr de supprimer cet patient?"
                 severity="danger"
             />
-            
         </div>
     );
 };
