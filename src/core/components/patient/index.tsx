@@ -1,8 +1,5 @@
-import {AddPatientModal} from './AddPatientModal';
+import { AddPatientModal } from './AddPatientModal';
 import { DetailPatientModal } from './DetailPatientModal';
 import { EditPatientModal } from './EditPatientModal';
-export {
-    AddPatientModal,
-    EditPatientModal,
-    DetailPatientModal
-}
+import { PatientTable } from './PatientTable';
+export { AddPatientModal, EditPatientModal, DetailPatientModal, PatientTable };

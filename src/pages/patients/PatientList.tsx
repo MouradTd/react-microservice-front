@@ -1,8 +1,7 @@
-import { AddPatientModal, EditPatientModal,DetailPatientModal } from '@/core/components';
+import { AddPatientModal, EditPatientModal,DetailPatientModal,PatientTable } from '@/core/components';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/core/hooks';
 import { patientActionThunk } from '@/redux/app/patient/patient-action-thunk';
-import { selectPatient } from '@/redux/app/patient/patient-slice';
 import { Validate } from '@/core';
 
 export const PatientList: React.FC = () => {
@@ -10,10 +9,7 @@ export const PatientList: React.FC = () => {
     const patients = useAppSelector(state => state.patient.patients);
     const selectedPatient = useAppSelector(state => state.patient.selectedItem);
     const [isLoading,setIsLoading] = useState(false);
-    const handleEditClick = (item: any) => {
-        dispatch(selectPatient(item));
-    };
-
+    
     useEffect(() => {
         const fetchPatients = async () => {
             await dispatch(patientActionThunk.getPatients());
@@ -21,14 +17,14 @@ export const PatientList: React.FC = () => {
 
         fetchPatients();
 
-        // Cleanup function
+        
         return () => {
-            setIsLoading(false); // Example: reset loading state
+            setIsLoading(false); 
         };
-    }, [dispatch]); // Ensure dispatch is stable and does not change
+    }, [dispatch]); 
 
     const deletePatient = async (event: React.MouseEvent) => {
-        event.preventDefault(); // Prevent default action
+        event.preventDefault(); 
         setIsLoading(true);
         try {
             await dispatch(patientActionThunk.deletePatient(selectedPatient?.id)); 
@@ -52,43 +48,12 @@ export const PatientList: React.FC = () => {
                 Ajouter un Patient
             </button>
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-300">
-                    <thead>
-                        <tr>
-                            <th className="border px-4 py-2">Nom Complet</th>
-                            <th className="border px-4 py-2">Age</th>
-                            <th className="border px-4 py-2">Email</th>
-                            <th className="border px-4 py-2">Sexe</th>
-                            <th className="border px-4 py-2">Date de Naissance</th>
-                            <th className="border px-4 py-2"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {patients.map(patient => (
-                            <tr key={patient.id}>
-                                <td className="border px-4 py-2 text-sm md:text-base">{patient.name}</td>
-                                <td className="border px-4 py-2 text-sm md:text-base">{patient.age}</td>
-                                <td className="border px-4 py-2 text-sm md:text-base">{patient.email}</td>
-                                <td className="border px-4 py-2 text-sm md:text-base">{patient.gender === 'MALE' ? 'Homme' : 'Femme'}</td>
-                                <td className="border px-4 py-2 text-sm md:text-base">{patient.dateOfBirth}</td>
-                                <td className='d-flex flex-row gap-2 p-2'>
-                                    <button className='btn btn-primary btn-sm'
-                                     data-bs-toggle="modal" data-bs-target="#detailPatient">
-                                        <i className='ti ti-eye'></i>
-                                    </button>
-                                    <button className='btn btn-warning btn-sm' onClick={() => handleEditClick(patient)}
-                                        data-bs-toggle="modal" data-bs-target="#editPatient">
-                                        <i className='ti ti-pencil'></i>
-                                    </button>
-                                    <button className='btn btn-danger btn-sm' onClick={() => handleEditClick(patient)}
-                                        data-bs-toggle="modal" data-bs-target="#delete-patient">
-                                        <i className='ti ti-trash'></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                
+                <div className="overflow-x-auto">
+                {patients  && (
+                    <PatientTable data={patients} />
+                )}
+            </div>
             </div>
 
             <AddPatientModal />

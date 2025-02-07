@@ -1,9 +1,10 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import {authReducer,patientReducer} from './app';
+import {appointementReducer, authReducer,patientReducer} from './app';
 
 
 export const rootReducer = combineReducers({
   auth: authReducer,
-  patient:patientReducer
+  patient:patientReducer,
+  appointement:appointementReducer
 });
 export type RootStateReducer = ReturnType<typeof rootReducer>;

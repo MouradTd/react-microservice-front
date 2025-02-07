@@ -1,5 +1,8 @@
 import {Modal} from '@/core/constants';
+import { useAppDispatch, useAppSelector } from '@/core/hooks';
+import { appointementActionThunk } from '@/redux/app';
 import { useState,useEffect } from 'react';
+import { AppointementsTable } from '../appointement';
 
 interface DetailPatientModalProps {
     patient: {
@@ -20,6 +23,7 @@ interface DetailPatientModalProps {
 }
 
 export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient }) => {
+    const dispatch = useAppDispatch();
     const [editedPatient, setEditedPatient] = useState(patient || {
         id: 0,
         name: '',
@@ -34,10 +38,16 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
         insuranceInformation: '',
         primaryCarePhysician: '',
     });
+    const appointements = useAppSelector(state => state.appointement.patient?.appointments);
 
     useEffect(() => {
         if (patient) {
             setEditedPatient(patient);
+            console.log('get appointements');
+            const fetchPatientAppointements = async () => {
+                await dispatch(appointementActionThunk.getPatientAppointements(patient.id));
+            };
+            fetchPatientAppointements();
         }
     }, [patient]);
 
@@ -46,7 +56,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
     
 
     return (
-        <Modal id="detailPatient" title="Detail Patient" size='lg'>
+        <Modal id="detailPatient" title="Detail Patient" size='xl'>
                 <div className="modal-body">
                     <div className="row">
                         <div className="col-6 mb-3">
@@ -116,25 +126,28 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                                 className="border p-2 w-full"
                             />
                         </div>
-                        <div className="col-12 mb-3">
+                        <div className="col-6 mb-3">
                             <textarea name="address"
                                 placeholder="Address"
                                 value={editedPatient.address}  className="border p-2 w-full" disabled></textarea>
                         </div>
-                        <div className="col-12 mb-3">
+                        <div className="col-6 mb-3">
                             <textarea name="medicalHistory"
                                 placeholder="Medical History"
                                 value={editedPatient.medicalHistory}  className="border p-2 w-full" disabled></textarea>
                         </div>
-                        <div className="col-12 mb-3">
+                        <div className="col-6 mb-3">
                             <textarea name="allergies"
                                 placeholder="Allergies"
                                 value={editedPatient.allergies}  className="border p-2 w-full" disabled></textarea>
                         </div>
-                        <div className="col-12 mb-3">
+                        <div className="col-6 mb-3">
                             <textarea name="insuranceInformation"
                                 placeholder="Insurance Information"
                                 value={editedPatient.insuranceInformation}  className="border p-2 w-full" disabled></textarea>
+                        </div>
+                        <div className="row">
+                            <AppointementsTable data={appointements}/>
                         </div>
                     </div>
                     <div className="modal-footer">
