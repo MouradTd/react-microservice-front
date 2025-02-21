@@ -1,67 +1,129 @@
 import { Modal } from '@/core/constants';
-import { useAppDispatch, useAppSelector } from '@/core/hooks';
-import { appointementActionThunk } from '@/redux/app';
-import { useState, useEffect } from 'react';
-import { AppointementsPatientTable } from './AppointementsPatientTable';
+import { useEffect, useState } from 'react';
 
-interface DetailPatientModalProps {
-    patient: {
+interface DetailAppointementModal {
+    data?: {
         id: number;
-        name: string;
-        age: string;
-        address: string;
-        email: string;
-        gender: string;
-        dateOfBirth: string;
-        medicalHistory: string;
-        allergies: string;
-        emergencyContact: string;
-        insuranceInformation: string;
-        primaryCarePhysician: string;
+        dateTime: string;
+        duration: number;
+        patientId: number;
+        doctorId: number;
+        status: string;
+        notes: string;
+        salleId: number;
+        factureId: null | number;
+        patient: {
+            id: number;
+            name: string;
+            surname: string | null;
+            email: string;
+            phone: string;
+            age: number;
+            address: string;
+            gender: string;
+            dateOfBirth: string;
+            emergencyContact: string;
+            insuranceInformation: string;
+            primaryCarePhysician: string;
+            medicalHistory: string;
+            allergies: string;
+        };
     };
 }
+// Default appointment object
+const defaultAppointment = {
+    id: 0,
+    dateTime: "",
+    duration: 0,
+    patientId: 0,
+    doctorId: 0,
+    status: "",
+    notes: "",
+    salleId: 0,
+    factureId: null,
+    patient: {
+        id: 0,
+        name: "John Doe",
+        surname: null,
+        email: "john.doe@example.com",
+        phone: "",
+        age: 30,
+        address: "",
+        gender: "MALE",
+        dateOfBirth: "",
+        emergencyContact: "",
+        insuranceInformation: "",
+        primaryCarePhysician: "",
+        medicalHistory: "",
+        allergies: "",
+        appointments: null
+    }
+};
+export const DetailAppointementModal: React.FC<DetailAppointementModal> = ({ data }) => {
 
-export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient }) => {
-    const dispatch = useAppDispatch();
-    const [editedPatient, setEditedPatient] = useState(
-        patient || {
-            id: 0,
-            name: '',
-            age: '',
-            address: '',
-            email: '',
-            gender: '',
-            dateOfBirth: '',
-            medicalHistory: '',
-            allergies: '',
-            emergencyContact: '',
-            insuranceInformation: '',
-            primaryCarePhysician: ''
-        }
+    const [selectedAppointement, setSelectedAppointement] = useState(
+        data || defaultAppointment
     );
-    const appointements = useAppSelector((state) => state.appointement.patient?.appointments);
-
     useEffect(() => {
-        if (patient) {
-            setEditedPatient(patient);
-            console.log('get appointements');
-            const fetchPatientAppointements = async () => {
-                await dispatch(appointementActionThunk.getPatientAppointements(patient.id));
-            };
-            fetchPatientAppointements();
+        if (data) {
+            setSelectedAppointement(data);
+        } else {
+            setSelectedAppointement(defaultAppointment);
         }
-    }, [patient]);
-
+    }, [data]);
+    
+    
     return (
-        <Modal id="detailPatient" title="Detail Patient" size="xl">
+        <Modal id="detailAppointement" title="Detail Rendez-vous" size="xl">
             <div className="modal-body">
+                
                 <div className="row">
+                    <div className="col-6 mb-3">
+                        <input
+                            type="datetime-local"
+                            name="name"
+                            placeholder="Date"
+                            value={selectedAppointement.dateTime}
+                            disabled
+                            className="border p-2 w-full"
+                        />
+                    </div>
+                    <div className="col-6 mb-3">
+                        <input
+                            type="number"
+                            name="name"
+                            placeholder="Duration"
+                            value={selectedAppointement.duration}
+                            disabled
+                            className="border p-2 w-full"
+                        />
+                    </div>
+                    <div className="col-6 mb-3">
+                        <input
+                            type="number"
+                            name="name"
+                            placeholder="Status"
+                            value={selectedAppointement.status}
+                            disabled
+                            className="border p-2 w-full"
+                        />
+                    </div>
+                    <div className="col-12 mb-3">
+                        <textarea
+                            name="address"
+                            placeholder="Notes"
+                            value={selectedAppointement.notes}
+                            className="border p-2 w-full"
+                            disabled
+                        ></textarea>
+                    </div>
+
                     <div className="col-6 mb-3">
                         <input
                             type="text"
                             name="name"
                             placeholder="Name"
-                            value={editedPatient.name}
+                            value={selectedAppointement.patient.name}
                             disabled
                             className="border p-2 w-full"
                         />
@@ -71,7 +133,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                             type="number"
                             name="age"
                             placeholder="Age"
-                            value={editedPatient.age}
+                            value={selectedAppointement.patient.age}
                             disabled
                             className="border p-2 w-full"
                         />
@@ -81,7 +143,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                             type="email"
                             name="email"
                             placeholder="Email"
-                            value={editedPatient.email}
+                            value={selectedAppointement.patient.email}
                             disabled
                             className="border p-2 w-full"
                         />
@@ -90,7 +152,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                         <select
                             name="gender"
                             className="border p-2 w-full"
-                            value={editedPatient.gender}
+                            value={selectedAppointement.patient.gender}
                         >
                             <option value="" disabled>
                                 Select Gender
@@ -104,7 +166,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                             type="date"
                             name="dateOfBirth"
                             placeholder="Date of Birth"
-                            value={editedPatient.dateOfBirth}
+                            value={selectedAppointement.patient.dateOfBirth}
                             disabled
                             className="border p-2 w-full"
                         />
@@ -114,7 +176,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                             type="text"
                             name="emergencyContact"
                             placeholder="Emergency Contact"
-                            value={editedPatient.emergencyContact}
+                            value={selectedAppointement.patient.emergencyContact}
                             disabled
                             className="border p-2 w-full"
                         />
@@ -124,7 +186,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                             type="text"
                             name="primaryCarePhysician"
                             placeholder="Primary Care Physician"
-                            value={editedPatient.primaryCarePhysician}
+                            value={selectedAppointement.patient.primaryCarePhysician}
                             disabled
                             className="border p-2 w-full"
                         />
@@ -133,7 +195,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                         <textarea
                             name="address"
                             placeholder="Address"
-                            value={editedPatient.address}
+                            value={selectedAppointement.patient.address}
                             className="border p-2 w-full"
                             disabled
                         ></textarea>
@@ -142,7 +204,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                         <textarea
                             name="medicalHistory"
                             placeholder="Medical History"
-                            value={editedPatient.medicalHistory}
+                            value={selectedAppointement.patient.medicalHistory}
                             className="border p-2 w-full"
                             disabled
                         ></textarea>
@@ -151,7 +213,7 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                         <textarea
                             name="allergies"
                             placeholder="Allergies"
-                            value={editedPatient.allergies}
+                            value={selectedAppointement.patient.allergies}
                             className="border p-2 w-full"
                             disabled
                         ></textarea>
@@ -160,29 +222,10 @@ export const DetailPatientModal: React.FC<DetailPatientModalProps> = ({ patient 
                         <textarea
                             name="insuranceInformation"
                             placeholder="Insurance Information"
-                            value={editedPatient.insuranceInformation}
+                            value={selectedAppointement.patient.insuranceInformation}
                             className="border p-2 w-full"
                             disabled
                         ></textarea>
-                    </div>
-                    <div className="row">
-                        {appointements  ? (
-                            <AppointementsPatientTable data={appointements} />
-                        ) : (
-                            <div className="card-body border-top pt-4 d-flex align-items-center justify-content-center">
-                                <div className="row mt-5">
-                                    <div className="col-12 text-center">
-                                        <h5>Chargement des données...</h5>
-                                        <div
-                                            className="spinner-border text-primary mt-4"
-                                            role="status"
-                                        >
-                                            <span className="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
                 <div className="modal-footer">

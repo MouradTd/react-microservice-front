@@ -17,3 +17,23 @@
     transform: translateY(-1.5rem) scale(0.75);
     background-color: white;
 }
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+aside {
+    transition: width 0.3s ease;
+}
+
+.main-content {
+    transition: margin-left 0.3s ease;
+}
+
+footer {
+    background-color: #4B5563; /* Adjust as needed */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}

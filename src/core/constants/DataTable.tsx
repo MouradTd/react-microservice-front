@@ -10,6 +10,7 @@ type ActionButton = {
   type?: string;
   text?: string;
   onClick: (item: Item) => void;
+  condition?: (item: Item) => boolean;
 };
 
 interface TableProps {
@@ -113,18 +114,22 @@ const DataTable: React.FC<TableProps> = ({ items = [], headers, buttonType, page
                     {header.type === "number" && <small>{helpers.formatNumber(item[header.value])}</small>}
                     {header.type === "date" && <small>{helpers.formatDate(item[header.value])}</small>}
                     {header.type === "characteristics" && item[header.value].map((char, idx) => (<span key={idx}>{char}, </span>))}
+                    {header.type === "patient" && <>{item.patient.name}</>}
+                    {header.type === "produit" && <>{item.produit.name}</>}
                   </td>
                 ))}
                 {buttonType === "simple" && (
                   <td className="text-center">
                     {actionsConfig.map((action) => (
-                      <button
-                        key={action.icon}
-                        className={`btn me-2 btn-sm ${action.className}`}
-                        onClick={() => action.onClick(item)}
-                      >
-                        <i className={action.icon}></i>
-                      </button>
+                      (!action.condition || action.condition(item)) && (
+                        <button
+                          key={action.icon}
+                          className={`btn me-2 btn-sm ${action.className}`}
+                          onClick={() => action.onClick(item)}
+                        >
+                          <i className={action.icon}></i>
+                        </button>
+                      )
                     ))}
                   </td>
                 )}

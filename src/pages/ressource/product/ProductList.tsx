@@ -1,39 +1,33 @@
-import {
-    AddPatientModal,
-    EditPatientModal,
-    DetailPatientModal,
-    PatientTable
-} from '@/core/components';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/core/hooks';
-import { patientActionThunk } from '@/redux/app/patient/patient-action-thunk';
+import { ressourceActionThunk } from '@/redux/app/ressource';
 import { Validate } from '@/core';
+import { AddProductModal, EditProductModal, ProductsTable } from '@/core/components';
 
-export const PatientList: React.FC = () => {
+export const ProductList: React.FC = () => {
     const dispatch = useAppDispatch();
-    const patients = useAppSelector((state) => state.patient.patients);
-    const selectedPatient = useAppSelector((state) => state.patient.selectedItem);
+    const products = useAppSelector((state) => state.ressource.products);
+    const selectedProduct = useAppSelector((state) => state.ressource.selectedProduct);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const fetchPatients = async () => {
-            await dispatch(patientActionThunk.getPatients());
+        const fetchProducts = async () => {
+            await dispatch(ressourceActionThunk.getProducts());
         };
-
-        fetchPatients();
-
+        fetchProducts();
+        // cleanup function
         return () => {
             setIsLoading(false);
         };
     }, [dispatch]);
 
-    const deletePatient = async (event: React.MouseEvent) => {
+    const deleteProduct = async (event: React.MouseEvent) => {
         event.preventDefault();
         setIsLoading(true);
         try {
-            await dispatch(patientActionThunk.deletePatient(selectedPatient?.id));
+            await dispatch(ressourceActionThunk.deleteProduct(selectedProduct?.id));
             // @ts-ignore
-            $('#delete-patient').modal('hide');
+            $('#delete-product').modal('hide');
         } catch (error) {
             console.error('Failed to Delete patient:', error);
         } finally {
@@ -41,20 +35,21 @@ export const PatientList: React.FC = () => {
         }
     };
 
+
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Liste des Patients</h1>
+            <h1 className="text-2xl font-bold mb-4">Liste des Produits</h1>
             <button
                 className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
                 data-bs-toggle="modal"
-                data-bs-target="#addNewPatient"
+                data-bs-target="#addNewProduct"
             >
-                Ajouter un Patient
+                Ajouter un Produit
             </button>
             <div className="overflow-x-auto">
                 <div className="overflow-x-auto">
-                    {patients && patients.length ? (
-                        <PatientTable data={patients} />
+                {products && products.length ? (
+                        <ProductsTable data={products} />
                     ) : (
                         
                             <div className="card-body border-top pt-4 d-flex align-items-center justify-content-center">
@@ -75,18 +70,18 @@ export const PatientList: React.FC = () => {
                 </div>
             </div>
 
-            <AddPatientModal />
-            <EditPatientModal patient={selectedPatient} />
-            <DetailPatientModal patient={selectedPatient} />
+            <AddProductModal/>
+            <EditProductModal product={selectedProduct}/>
             <Validate
-                id="delete-patient"
+                id="delete-product"
                 isLoading={isLoading}
-                method={deletePatient}
-                itemid={selectedPatient?.id}
-                title="Supression d'un patient"
-                message="Êtest-vous sûr de supprimer cet patient?"
+                method={deleteProduct}
+                itemid={selectedProduct?.id}
+                title="Supression d'un Produit"
+                message="Êtest-vous sûr de supprimer cet Produit?"
                 severity="danger"
             />
+
         </div>
     );
 };
