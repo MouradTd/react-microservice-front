@@ -27,7 +27,7 @@ Make sure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YourUsername/patient-management-system.git
+   git clone https://github.com/MouradTd/patient-management-system.git
    cd patient-management-system
    ```
 
