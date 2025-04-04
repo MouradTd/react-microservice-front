@@ -7,7 +7,7 @@ export const DemandeProductTable: React.FC<{ data: any[] }> = ({ data }) => {
     const actionsConfig = [
         { icon: 'ti ti-pencil', className: 'btn-warning', onClick: (item) => editiItem(item) },
         { icon: 'ti ti-trash', className: 'btn-danger', onClick: (item) => deleteItem(item) },
-        { icon: 'ti ti-progress-check', className: 'btn-success', onClick: (item) => validateItem(item) },
+        { icon: 'ti ti-progress-check', className: 'btn-success', onClick: (item) => validateItem(item),condition: (item: any) => item.status === 'pending' },
     ];
 
     const deleteItem = (item: any) => {

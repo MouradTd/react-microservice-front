@@ -73,7 +73,7 @@ class AppointementActionThunk {
       try {
         const res = await appointementService.passedAppointement(id);
         if (res?.status === 200) {
-          dispatch(editAppointement(id)); // Dispatch the action with the data
+          dispatch(editAppointement(res.data)); // Dispatch the action with the data
         }
         return res;
       } catch (error) {

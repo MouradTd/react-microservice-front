@@ -35,6 +35,30 @@ class PatientService {
             console.log(e);
         }
     }
+    async getPatient(id:any) {
+        try {
+            const res = await client.get(this.URI+id);
+            return res;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    async deleteDocument(id:any) {
+        try {
+            const res = await client.delete('/documents/'+id);
+            return res;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    async uploadDocument(id:number,data:any) {
+        try {
+            const res = await client.post('/documents/'+id,data);
+            return res;
+        } catch (e) {
+            console.log(e);
+        }
+    }
 }
 export const patientService = new PatientService();
 

@@ -44,8 +44,9 @@ const patientSlice = createSlice({
                 state.patients[index] = action.payload;
             }
         },
+        
     },
 });
 
-export const { setPatients, addPatient, removePatient,selectPatient,clearSelectedPatient,editPatient } = patientSlice.actions;
+export const { setPatients, addPatient, removePatient,selectPatient,clearSelectedPatient,editPatient} = patientSlice.actions;
 export const patientReducer = patientSlice.reducer;

@@ -13,13 +13,15 @@ export interface Patient {
 interface AppointementState {
     patient: Patient[];
     appointements:[],
-    selectedItem:unknown
+    selectedItem:unknown,
+    selectedDocument: BigInteger | null;
 }
 
 const initialState: AppointementState = {
     patient: [],
     appointements:[],
-    selectedItem:null
+    selectedItem:null,
+    selectedDocument: null,
 };
 
 const appointementSlice = createSlice({
@@ -48,8 +50,20 @@ const appointementSlice = createSlice({
         removeAppointement(state, action: PayloadAction<number>) {
             state.appointements = state.appointements.filter(patient => patient.id !== action.payload);
         },
+        removeDocument(state, action: PayloadAction<number>) {
+            state.patients = state.selectedItem.documents.filter(document => document.id !== action.payload);
+        },
+        setSelectDocument(state, action: PayloadAction<BigInteger | null>) {
+            state.selectedDocument = action.payload;
+        },
+        addDocumentModal(state, action: PayloadAction<{ title: string; file: File | null }>) {
+            const newDocument = action.payload;
+            if (state.selectedItem) {
+                state.selectedItem.documents.push(newDocument);
+            }
+        }
     },
 });
 
-export const { setPatient , setAppointements , selectItem , editAppointement , pushAppointement , removeAppointement } = appointementSlice.actions;
+export const { setPatient , setAppointements , selectItem , editAppointement , pushAppointement , removeAppointement , removeDocument,setSelectDocument,addDocumentModal } = appointementSlice.actions;
 export const appointementReducer = appointementSlice.reducer;

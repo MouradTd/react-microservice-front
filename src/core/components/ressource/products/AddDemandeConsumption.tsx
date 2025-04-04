@@ -33,7 +33,7 @@ export const AddDemandeConsumption: React.FC = () => {
         setIsLoading(true);
         try {
             const formData = {
-                produitId : selectedOption.key,
+                produit_id : selectedOption.key,
                 usageDescription : newDemande.usageDescription,
                 quantity : newDemande.quantity,
                 status:'pending'

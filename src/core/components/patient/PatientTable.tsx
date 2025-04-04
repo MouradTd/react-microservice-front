@@ -2,9 +2,11 @@ import { DataTable, useAppDispatch } from '@/core';
 import helpers from '@/core/utils/helpers';
 import { selectPatient } from '@/redux/app';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const PatientTable: React.FC<{ data: any[] }> = ({ data }) => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const actionsConfig = [
         { icon: 'ti ti-eye', className: 'btn-primary', onClick: (item) => showItem(item) },
         { icon: 'ti ti-pencil', className: 'btn-warning', onClick: (item) => editiItem(item) },
@@ -17,8 +19,10 @@ export const PatientTable: React.FC<{ data: any[] }> = ({ data }) => {
     };
 
     const showItem = (item: any) => {
-        dispatch(selectPatient(item));
-        $('#detailPatient').modal('show');
+        // dispatch(selectPatient(item));
+        // $('#detailPatient').modal('show');
+        dispatch(selectPatient(item.id));
+        navigate(`/patient/${item.id}`);
     };
 
     const editiItem = (item: any) => {

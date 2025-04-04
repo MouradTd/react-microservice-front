@@ -1,4 +1,4 @@
-import { AppointementsList, Error404, LoginPage ,PatientList, SallesList , ProductList, ProductConsumption} from '@/pages';
+import { AppointementsList, Error404, LoginPage ,PatientList, SallesList , ProductList, ProductConsumption, ProfilePatient} from '@/pages';
 import type { RouteObject } from 'react-router';
 import { useRoutes } from 'react-router-dom';
 
@@ -30,6 +30,10 @@ const routes: RouteObject[] = [
     {
         path: '/product-consumption',
         element: <ProductConsumption />
+    },
+    {
+        path: '/patient/:id',
+        element: <ProfilePatient />
     },
 ];
 

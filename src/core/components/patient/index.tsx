@@ -3,4 +3,5 @@ import { DetailPatientModal } from './DetailPatientModal';
 import { EditPatientModal } from './EditPatientModal';
 import { PatientTable } from './PatientTable';
 import  {AppointementsPatientTable} from './AppointementsPatientTable'
-export { AddPatientModal, EditPatientModal, DetailPatientModal, PatientTable, AppointementsPatientTable };
+import {AddDocumentModal} from './AddDocumentModal';
+export { AddPatientModal, EditPatientModal, DetailPatientModal, PatientTable, AppointementsPatientTable, AddDocumentModal };
